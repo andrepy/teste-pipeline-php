@@ -55,12 +55,15 @@ jobs:
     permissions:
       pages: write
       id-token: write
+      actions: read
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Configurar Github Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Upload do artefato
         uses: actions/upload-pages-artifact@v3
