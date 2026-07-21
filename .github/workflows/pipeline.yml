@@ -62,8 +62,6 @@ jobs:
     steps:
       - name: Configurar Github Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Upload do artefato
         uses: actions/upload-pages-artifact@v3
