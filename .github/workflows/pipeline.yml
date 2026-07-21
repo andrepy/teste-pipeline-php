@@ -23,4 +23,27 @@ jobs:
         run: composer install --no-interaction --prefer-dist
 
       - name: Executar SomaTest
+        id: testes
         run: vendor/bin/phpunit tests/SomaTest.php
+        continue-on-error: true
+
+      - name: Criar issue se o teste falhou
+        if: steps.testes.outcome == 'failure'
+        uses: actions/github-scripts@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '❌ Falha no teste SomaTest',
+              body: `O teste **SomaTest.php** falhou na execução do pipeline.\n\n` +
+                    `- **Branch:** \`${context.ref}\`\n` +
+                    `- **Commit:** \`${context.sha.substring(0, 7)}\`\n` +
+                    `- **Autor:** ${context.actor}\n` +
+                    `- **Workflow:** [Ver execução](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})\n`,
+              labels: ['bug', 'testes']
+            });
+
+      - name: Falhar o pipeline
+        if: steps.testes.outcome == 'failure'
+        run: exit 1

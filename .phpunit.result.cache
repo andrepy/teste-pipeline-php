@@ -1,1 +1,1 @@
-{"version":2,"defects":[],"times":{"SomaTest::testSomaDoisValores":0.002}}
+{"version":2,"defects":{"SomaTest::testSomaDoisValores":7},"times":{"SomaTest::testSomaDoisValores":0.002}}
